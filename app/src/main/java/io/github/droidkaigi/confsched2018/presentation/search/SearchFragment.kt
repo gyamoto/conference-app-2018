@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.SearchManager
 import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.database.CrossProcessCursor
 import android.os.Bundle
 import android.provider.SearchRecentSuggestions
@@ -22,6 +21,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
+import androidx.content.systemService
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
@@ -154,8 +154,8 @@ class SearchFragment : DaggerFragment() {
         val searchView = menuSearchItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
 
-        val searchManager = activity?.getSystemService(Context.SEARCH_SERVICE) as SearchManager
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(activity?.componentName))
+        val searchManager = activity?.systemService<SearchManager>()
+        searchView.setSearchableInfo(searchManager?.getSearchableInfo(activity?.componentName))
 
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -199,8 +199,7 @@ class SearchFragment : DaggerFragment() {
                 if (TextUtils.isEmpty(searchView.query)) {
                     searchView.isIconified = true
                 } else {
-                    val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as
-                            InputMethodManager
+                    val imm = view.context.systemService<InputMethodManager>()
                     imm.hideSoftInputFromWindow(view.windowToken, 0)
                 }
             }

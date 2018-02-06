@@ -9,10 +9,11 @@ import android.support.annotation.DrawableRes
 import android.support.annotation.IntegerRes
 import android.support.v4.content.ContextCompat
 import android.view.WindowManager
+import androidx.content.systemService
 
 fun Context.displaySize(): Size {
     val point = Point()
-    val manager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+    val manager = systemService<WindowManager>()
     manager.defaultDisplay.getSize(point)
     return Size(point.x, point.y)
 }

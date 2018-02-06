@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
+import androidx.content.systemService
 import io.github.droidkaigi.confsched2018.R
 import io.github.droidkaigi.confsched2018.model.Session
 import io.github.droidkaigi.confsched2018.presentation.common.notification.NotificationBroadcastReceiver
@@ -26,7 +27,7 @@ class SessionAlarm @Inject constructor(val context: Context) {
         val time = session.startTime.time - NOTIFICATION_TIME_BEFORE_START_MILLS
 
         if (System.currentTimeMillis() < time) {
-            val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            val alarmManager = context.systemService<AlarmManager>()
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 alarmManager.setAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
@@ -40,7 +41,7 @@ class SessionAlarm @Inject constructor(val context: Context) {
     }
 
     private fun unregister(session: Session.SpeechSession) {
-        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmManager = context.systemService<AlarmManager>()
         alarmManager.cancel(createAlarmIntent(context, session))
     }
 

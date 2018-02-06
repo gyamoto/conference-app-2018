@@ -3,6 +3,7 @@ package io.github.droidkaigi.confsched2018.di
 import android.app.Application
 import android.app.NotificationManager
 import android.content.Context
+import androidx.content.systemService
 import dagger.Module
 import dagger.Provides
 import io.github.droidkaigi.confsched2018.data.api.DroidKaigiApi
@@ -77,5 +78,5 @@ import javax.inject.Singleton
     @Provides
     @JvmStatic
     fun provideNotificationManager(context: Context): NotificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            context.systemService()
 }

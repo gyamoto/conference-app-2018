@@ -9,6 +9,7 @@ import android.support.annotation.StringRes
 import android.support.v4.app.NotificationCompat
 import android.support.v4.app.NotificationManagerCompat
 import android.support.v4.content.ContextCompat
+import androidx.content.systemService
 import io.github.droidkaigi.confsched2018.R
 
 enum class NotificationChannelType(
@@ -36,7 +37,7 @@ fun Context.initNotificationChannel() {
 
 @RequiresApi(Build.VERSION_CODES.O)
 private fun Context.createNotificationChannel(channelType: NotificationChannelType) {
-    (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+    systemService<NotificationManager>()
             .createNotificationChannel(NotificationChannel(
                     channelType.id,
                     getString(channelType.nameRes),
